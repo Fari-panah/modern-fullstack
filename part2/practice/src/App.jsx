@@ -1,22 +1,43 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Note from './component/Note'
-
-const App = (props) => {
-  const [notes, setNotes] = useState(props.notes)
+import axios from 'axios'
+const App = () => {
+  const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
 
-  const addNote = (event) => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() > 0.5,
-      id: String(notes.length + 1),
-    }
+  useEffect(()=> {
+    axios
+    .get('http://localhost:3001/notes')
+    .then(response => setNotes(response.data))
+  }, [])
 
-    setNotes(notes.concat(noteObject))
-    setNewNote('')
+ const addNote = event => {
+  event.preventDefault()
+  const noteObject = {
+    content: newNote,
+    important: Math.random() < 0.5,
   }
+
+  axios
+    .post('http://localhost:3001/notes', noteObject)
+    .then(response => {
+      console.log(response)
+      setNotes(notes.concat(response.data)) // Add new note to UI
+      setNewNote('') // Clear the input
+    })
+}
+
+const toggleImportanceOf = id =>{
+  const url = `http://localhost:3001/notes/${id}`
+  const note = notes.find(n => n.id === id)
+  const changedNote = { ...note, important: !note.important }
+
+  axios.put(url, changedNote).then(response => {
+    setNotes(notes.map(note => note.id === id ? response.data : note))
+  })
+}
+
 
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
@@ -34,7 +55,7 @@ const App = (props) => {
       </div>
       <ul>
         {notesToShow.map((note) => (
-          <Note key={note.id} note={note} />
+          <Note key={note.id} note={note}  toggleImportance={() => toggleImportanceOf(note.id)} />
         ))}
       </ul>
       <form onSubmit={addNote}>
