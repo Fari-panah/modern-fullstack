@@ -1,4 +1,11 @@
-const Person = ({name, number}) => <p key={name}>{name} {number}</p>
+const Person = ({name, number, handleRemovePerson}) => {
+    return (
+        <p key={name}>
+    {name} {number}
+    <button onClick={handleRemovePerson}>delete</button>
+</p>
 
+    )
 
+}
 export default Person
