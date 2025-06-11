@@ -45,6 +45,12 @@ app.get('/api/persons/:id', (request, response) => {
         response.status(404).send('not found')
     }
 })
+app.delete('/api/persons/:id', (request, response) => {
+   const id = request.params.id
+   const person = persons.filter(p => p.id !== id)
+   response.json(person) 
+
+})
 
 const PORT = 3001
 app.listen(PORT)
