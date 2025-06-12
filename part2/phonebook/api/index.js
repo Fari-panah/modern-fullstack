@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
+
 let persons = [
     { 
       "id": "1",
@@ -53,6 +56,13 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 app.post('/api/persons', (request, response) => {
     const person = request.body 
+    if (!person.name || !person.number){
+      return response.status(400).json({ error: 'name or number is missing' })
+    }
+    const nameExist = persons.find(p => p.name === person.name)
+    if (nameExist){
+      return response.status(400).json({error: 'name must be unique'})
+    }
     person.id = String(Math.floor(Math.random()* 10000))    
     persons = persons.concat(person)
     console.log(person)
