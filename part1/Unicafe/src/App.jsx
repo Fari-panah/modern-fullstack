@@ -2,20 +2,30 @@ import { useState } from 'react'
 const Button = (props) => <button onClick={props.onClick}>{props.text}</button>
 const Statistics = (props) => {
    return(
-    <div>
-      <StatisticLine text="good" value ={props.good} />
-      <StatisticLine text="neutral" value ={props.neutral} />
-      <StatisticLine text="bad" value ={props.bad} />
-      <StatisticLine text="total" value ={props.total} />
-      <StatisticLine text="average" value ={props.average} />
-      <StatisticLine text="positive" value ={props.positive} />
-     
-    </div>
-  )
+    <table>
+      <tbody>
+        <StatisticLine text="good" value ={props.good} />
+        <StatisticLine text="neutral" value ={props.neutral} />
+        <StatisticLine text="bad" value ={props.bad} />
+        <StatisticLine text="total" value ={props.total} />
+        <StatisticLine text="average" value ={props.average} />
+        <StatisticLine text="positive" value ={props.positive} />
 
+      </tbody>
+    </table>
+    )
 }
 
-const StatisticLine = (props) =><p>{props.text} {props.value}</p>
+const StatisticLine = (props) =>{
+  return(
+    <tr>
+      <td>{props.text}</td>
+      <td>{props.value}</td>
+    </tr>
+     
+  )
+}
+
 const App =() => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
