@@ -3,6 +3,7 @@ import Filter from "./components/Filter"
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import api from './api/personService'
+import Notification from './components/Notification'
 const App = () => {
   const [persons, setPersons] = useState([
     // { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -13,7 +14,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterQuery, setFilterQuery] = useState('')
-
+  const [message, setMessage] = useState('message.....')
    useEffect(() =>{
     api.getAll()   
     .then(result => setPersons(result))
@@ -30,7 +31,7 @@ const App = () => {
     } else{
       api.create(newPerson)
       .then(addedPerson => setPersons(persons.concat(addedPerson)))
-
+      setMessage(`Added ${addedPerson.name}`)
       setNewName('')
       setNewNumber('')
 
@@ -44,19 +45,15 @@ const App = () => {
       api.remove(id)
       .then(deletedPerson => {
           setPersons(persons.filter(p =>p.name !== deletedPerson))
-
-      })
-      .catch(error => {
-        alert(`${name} is already added to phonebook, replace the old number with a new one? `)
-        setPersons(persons.filter(p => p.id !== id))
-      })
-       
+          setMessage(`Removed ${deletedPerson.name}`)
+       })
       
     }}
         
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter value={filterQuery} onChange={handleFilterQuery}/>
       <h2>add a new</h2>
       <PersonForm  
