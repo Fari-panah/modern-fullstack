@@ -11,6 +11,7 @@ morgan.token('post-data', function (req, res) {
 })
 app.use(express.json())  //Receiving data
 app.use(cors())
+app.use(express.static('dist'))
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type :post-data'))
 
@@ -38,7 +39,7 @@ let persons = [
 ]
 
 app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
+  response.send('<h1>Hello World!!</h1>')
 })
 
 app.get('/api/persons', (request, response) => {
