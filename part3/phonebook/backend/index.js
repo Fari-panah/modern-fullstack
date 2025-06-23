@@ -1,8 +1,18 @@
 const express = require('express')
 const cors = require('cors')
+const morgan = require('morgan')
 const app = express()
+
+morgan.token('type', function (req, res) {
+  return req.headers['content-type']
+})
+morgan.token('post-data', function (req, res) {
+  return req.method === 'POST' ? JSON.stringify(req.body) : ''
+})
 app.use(express.json())  //Receiving data
 app.use(cors())
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :type :post-data'))
 
 let persons = [
     { 
@@ -71,7 +81,7 @@ app.post('/api/persons', (request, response) => {
     person.id = Math.floor(Math.random() * 1000000)
     persons = persons.concat(person)
 
-    response.json(person)
+    response.json(persons)
 })
 
 const PORT = 3001
