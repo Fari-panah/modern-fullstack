@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
-app.use(express.json())
+app.use(express.json())  //Receiving data
 app.use(cors())
 
 let persons = [
@@ -56,6 +56,22 @@ app.delete('/api/persons/:id', (request, response) => {
     const person = persons.filter(p => p.id !== id)
     
     response.status(204).end()
+})
+
+app.post('/api/persons', (request, response) => {
+    const person = request.body
+
+    if (!person.name || !person.number) {
+        return response.status(400).json({ error: 'Name or number missing' })
+    }
+    const existPerson = persons.find(person => person.name === person.name)
+    if(existPerson){
+        return response.status(400).json({ error: 'name must be unique' })
+    }
+    person.id = Math.floor(Math.random() * 1000000)
+    persons = persons.concat(person)
+
+    response.json(person)
 })
 
 const PORT = 3001
