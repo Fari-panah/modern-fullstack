@@ -14,7 +14,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterQuery, setFilterQuery] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
    useEffect(() =>{
     api.getAll()   
@@ -38,7 +38,7 @@ const App = () => {
       .catch(error => {
         console.log(error.response.data.error)
         setErrorMessage(error.response.data.error)
-        
+        setTimeout(() => { setErrorMessage("") }, 4000)
       })
       
     }
