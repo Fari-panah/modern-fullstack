@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Filter from "./components/Filter"
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import api from './api/personService'
 const App = () => {
   const [persons, setPersons] = useState([
@@ -13,6 +14,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterQuery, setFilterQuery] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
    useEffect(() =>{
     api.getAll()   
@@ -29,11 +31,16 @@ const App = () => {
       }
     } else{
       api.create(newPerson)
-      .then(addedPerson => setPersons(persons.concat(addedPerson)))
+      .then(addedPerson => {setPersons(persons.concat(addedPerson))
 
       setNewName('')
-      setNewNumber('')
-
+      setNewNumber('')})
+      .catch(error => {
+        console.log(error.response.data.error)
+        setErrorMessage(error.response.data.error)
+        
+      })
+      
     }
   }
    const handleNewName = (event)=> setNewName(event.target.value)
@@ -57,6 +64,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message = {errorMessage} />
       <Filter value={filterQuery} onChange={handleFilterQuery}/>
       <h2>add a new</h2>
       <PersonForm  
