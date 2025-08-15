@@ -12,12 +12,12 @@ const url = `mongodb+srv://fullstack:${password}@cluster0.aemsfld.mongodb.net/pe
 mongoose.set('strictQuery',false)
 
 mongoose.connect(url)
-.then(() => {
-    console.log("✅ Connected to MongoDB!")
+  .then(() => {
+    console.log('✅ Connected to MongoDB!')
     //mongoose.connection.close()
   })
   .catch(err => {
-    console.error("❌ Connection error:", err.message)
+    console.error('❌ Connection error:', err.message)
   })
 
 const personSchema = new mongoose.Schema({
@@ -37,19 +37,19 @@ const Person = mongoose.model('Person', personSchema)
 
 const person = new Person({
 
-     "name": "Arto Hellas", 
-     "number": "040-123456",
-   
+  'name': 'Arto Hellas',
+  'number': '040-123456',
+
 })
 
-person.save().then(result => {
+person.save().then(() => {
   console.log('person saved!!!')
   mongoose.connection.close()
 })
 
 Person.find({}).then(result => {
   result.forEach(p => {
-    console.log(p);
+    console.log(p)
   })
   mongoose.connection.close()
 })
