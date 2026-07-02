@@ -78,6 +78,20 @@ test('a specific note can be viewed', async() => {
   assert.deepStrictEqual(resultNote.body, noteToView)
 
 })
+test('a note can be deleted', async() => {
+  //use await only for promises.
+  //Async functions always return a Promise
+  const noteAtStart = await helper.notesInDb()
+  const noteToDelete = noteAtStart[0]
+  await api
+    .delete(`7api/notes/${noteToDelete.id}`)
+    .expect(204)
+  const notesAtEnd = await helper.notesInDb()
+  const ids = notesAtEnd.map(n => n.id)
+  assert(!ids.includes(noteToDelete.id))
+  assert.strictEqual(notesAtEnd.length, helper.initialNotes.length -1)
+
+})
 
 
 after(async () => {
