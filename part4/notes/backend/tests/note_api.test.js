@@ -9,15 +9,27 @@ const Note = require('../models/note')
 
 const api = supertest(app)
 
-beforeEach(async () => {
+/*beforeEach(async () => {
   await Note.deleteMany({})
   let noteObject = new Note(helper.initialNotes[0])
   await noteObject.save()
   noteObject = new Note(helper.initialNotes[1])
   await noteObject.save()
+})*/
+beforeEach(async () => {
+  await Note.deleteMany({})
+  console.log('cleared')
+
+  helper.initialNotes.forEach(async (note) => {
+    let noteObject = new Note(note)
+    await noteObject.save()
+    console.log('saved')
+  })
+  console.log('done')
 })
 
 test('notes are returned as json', async () => {
+  console.log('entered test')
   await api
     .get('/api/notes')
     .expect(200)
