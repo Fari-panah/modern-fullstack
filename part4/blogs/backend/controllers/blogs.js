@@ -28,7 +28,7 @@ blogsRouter.post('/', async (request, response) => {
   })
   //.save() automatically runs validators.
   const savedBlog = await blog.save()
-  response.json(savedBlog)
+  response.status(201).json(savedBlog)
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
