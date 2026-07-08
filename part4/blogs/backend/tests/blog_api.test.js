@@ -30,3 +30,28 @@ test('the unique identifier property of blog posts is named id', async () => {
   assert(blog.id !== undefined) //the id property or field there is
   assert.strictEqual(blog._id, undefined) //(actual, expected)
 })
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'Node.js Testing',
+    author: 'Farnaz',
+    url: 'https://example.com',
+    likes: 10
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  assert.strictEqual(
+    blogsAtEnd.length,
+    helper.initialBlogs.length + 1
+  )
+
+  const titles = blogsAtEnd.map(blog => blog.title)
+
+  assert(titles.includes('Node.js Testing'))
+})
