@@ -1,4 +1,4 @@
-const { test, beforeEach } = require('node:test')
+const { test, beforeEach, after } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
@@ -73,4 +73,25 @@ test('if likes property is missing, it defaults to 0', async () => {
   const savedBlog = blogsAtEnd[blogsAtEnd.length - 1]
 
   assert.strictEqual(savedBlog.likes, 0)
+})
+test('if the properties are missing from the request', async () => {
+  const newBlog ={
+    author: 'Farnaz'
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  //nothing add to database, because of bad request
+  assert.strictEqual(
+    blogsAtEnd.length,
+    helper.initialBlogs.length
+  )
+
+})
+
+after(async () => {
+  await mongoose.connection.close()
 })
