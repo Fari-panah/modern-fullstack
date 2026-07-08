@@ -1,20 +1,20 @@
-const dummy = (blogs) => {
-    return 1
-    
+const dummy = () => {
+  return 1
+
 }
 
 const totalLikes = (blogs) => {
-    return blogs.reduce((total, blog)=> total + blog.likes, 0)
+  return blogs.reduce((total, blog) => total + blog.likes, 0)
 
 }
 
 const favoriteBlog = (blogs) => {
-    return blogs.reduce((favorite, blog) => {
-        if(blog.likes > favorite.likes){
-            return blog
-        }
-        return favorite
-    })
+  return blogs.reduce((favorite, blog) => {
+    if(blog.likes > favorite.likes){
+      return blog
+    }
+    return favorite
+  })
 }
 
-module.exports = {dummy, totalLikes, favoriteBlog}
+module.exports = { dummy, totalLikes, favoriteBlog }
