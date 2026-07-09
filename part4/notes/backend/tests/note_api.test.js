@@ -88,7 +88,7 @@ test('a note can be deleted', async() => {
   const noteAtStart = await helper.notesInDb()
   const noteToDelete = noteAtStart[0]
   await api
-    .delete(`7api/notes/${noteToDelete.id}`)
+    .delete(`/api/notes/${noteToDelete.id}`)
     .expect(204)
   const notesAtEnd = await helper.notesInDb()
   const ids = notesAtEnd.map(n => n.id)

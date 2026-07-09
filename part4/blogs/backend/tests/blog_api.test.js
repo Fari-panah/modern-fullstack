@@ -91,6 +91,18 @@ test('if the properties are missing from the request', async () => {
   )
 
 })
+test('a blog can be deleted', async () => {
+  const blogAtStart = await helper.blogsInDb()
+  const blogToDelete = blogAtStart[0]
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+  const blogsAtEnd = await helper.blogsInDb()
+  const ids = blogsAtEnd.map(b => b.id)
+  assert(!ids.includes(blogToDelete.id))
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length -1)
+
+})
 
 after(async () => {
   await mongoose.connection.close()
