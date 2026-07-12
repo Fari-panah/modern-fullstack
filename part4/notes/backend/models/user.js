@@ -4,7 +4,9 @@ const userSchema = mongoose.Schema({
   username:{
     type: String,
     required: true,
-    unique: true
+    minlength: 4,
+    match: /^[a-zA-Z0-9_]+$/,
+    unique: true // is not validation, in MongoDb create index
 
   },
   name: String,
