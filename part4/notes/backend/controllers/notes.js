@@ -1,6 +1,7 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 /*notesRouter.get('/', (request, response) => {
   Note.find({}).then(notes => {
@@ -48,11 +49,28 @@ notesRouter.get('/:id', async (request, response) => {
     })
     .catch(error => next(error))
 })*/
+
+const getTokenFrom = request => {
+  //There are several ways of sending the token from the browser to the server.
+  //get Authorization Header.that is name authorization
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
 //When using async/await syntax, Express will automatically
 //call the error-handling middleware:
 notesRouter.post('/', async (request, response) => {
   const body = request.body
-  const user = await User.findById(body.userId)
+  //t verifies the JWT's signature and is same with secret,if the token is valid, it returns the original payload.
+  //returns the Object which the token was based on.
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+  //const user = await User.findById(body.userId)
   if(!user){
     return response.status(400).json({ error:'userId missing or not valid' })
   }
