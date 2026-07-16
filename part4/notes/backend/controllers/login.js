@@ -31,7 +31,9 @@ loginRouter.post('/', async(request, response) => {
   //in token because at first the password was checked and also because of security
   //who know the secret can generate a valid token. The value for
   //the environment variable must be set in the .env file.
-  const token = jwt.sign(userForToken, process.env.SECRET)
+  const token = jwt.sign(userForToken, process.env.SECRET,
+    { expiresIn: 60*60 }
+  )
   response
     .status(200)
     .send({ token, username: user.username, name: user.name })
