@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     minlength: 4,
-    match: /^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])[a-zA-Z0-9_]+$/,  //the username must contain at least one lowercaseletter,one uppercase letter, at least one number,
+    match: /^[a-zA-Z0-9_]+$/,///^(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])[a-zA-Z0-9_]+$/,  //the username must contain at least one lowercaseletter,one uppercase letter, at least one number,
     unique: true  // is not validation, in MongoDb create index
 
   },

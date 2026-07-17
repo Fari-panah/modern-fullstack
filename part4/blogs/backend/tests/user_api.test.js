@@ -59,7 +59,47 @@ describe('when there is initialy one user at db', () => {
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
 
   })
+  test('creation fails if password is too short', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'john',
+      name: 'John',
+      password: 'ab'
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      //// The expected error message in the test must match the error message returned by the API.
+    assert(result.body.error.includes('password must be at least 8 characters'))
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+  test('creation fails if username contains invalid characters', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'john@123',
+      name: 'John',
+      password: 'Password123'
+
+    }
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    assert(result.body.error.includes('username'))
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
 })
+
 
 after(async () => {
   await mongoose.connection.close()
