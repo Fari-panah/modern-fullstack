@@ -62,6 +62,7 @@ const getTokenFrom = request => {
 //When using async/await syntax, Express will automatically
 //call the error-handling middleware:
 notesRouter.post('/', async (request, response) => {
+  //The request body is simply the data the client sends to the backend
   const body = request.body
   //t verifies the JWT's signature and is same with secret,if the token is valid, it returns the original payload.
   //returns the Object which the token was based on.
