@@ -66,6 +66,7 @@ notesRouter.post('/', async (request, response) => {
   const body = request.body
   //t verifies the JWT's signature and is same with secret,if the token is valid, it returns the original payload.
   //returns the Object which the token was based on.
+  //The object decoded from the token contains the username and id fields, which tell the server who made the request.
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
