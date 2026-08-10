@@ -121,6 +121,26 @@ test('update of an individual blog post', async () => {
   assert.strictEqual(result.likes, 100)
 
 })
+test('a blog cannot be added without a token', async () => {
+
+  const newBlog = {
+    title: 'New blog',
+    author: 'Fari',
+    url: 'https://example.com',
+    likes: 5
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(401)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  assert.strictEqual(
+    blogsAtEnd.length,
+    helper.initialBlogs.length
+  )
+})
 
 after(async () => {
   await mongoose.connection.close()
