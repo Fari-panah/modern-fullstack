@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +12,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState(null)
  
  
   useEffect(() => {
@@ -34,17 +36,23 @@ const App = () => {
       author,
       url
     }
-    blogService.create(blogObject).then(returnedBlog =>{
+    blogService
+    .create(blogObject)
+    .then(returnedBlog =>{
       setBlogs(blogs.concat(returnedBlog))
+      setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
       setTitle('')
       setAuthor('')
       setUrl('')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     })
-
   }
 
   const handleLogin = async event => {
       event.preventDefault()
+      try {
         const user = await loginService.login({ username, password })
         window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
@@ -54,7 +62,14 @@ const App = () => {
         setUser(user)
         setUsername('')
         setPassword('')
-     
+        
+      } catch {
+        setMessage('wrong username or password')
+
+        setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+      }
     }
   const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
@@ -98,6 +113,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message= {message}/>
       {!user && loginForm()}
       {user && (
         <div>
