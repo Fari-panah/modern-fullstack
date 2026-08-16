@@ -29,7 +29,7 @@ const App = () => {
     }
   }, [])
 
-    const addBlog = blogObject =>
+  const addBlog = blogObject =>
     blogService
     .create(blogObject)
     .then(returnedBlog =>{
@@ -40,8 +40,26 @@ const App = () => {
         setMessage(null)
       }, 5000)
     })
-  
 
+    
+ const updateBlog = (blog) => {
+  const updatedBlog = {
+    ...blog,
+    user: blog.user.id || blog.user._id
+  }
+
+  blogService
+    .update(blog.id, updatedBlog)
+    .then(updatedBlog => {
+      setBlogs(
+        blogs.map(b =>
+          b.id === updatedBlog.id ? updatedBlog : b
+        )
+      )
+    })
+ }
+
+ 
   const handleLogin = async (username, password)=> {
      
       try {
@@ -71,7 +89,7 @@ const App = () => {
   const blogList = () => (
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} increseLike={updateBlog}/>
       )}
     </div>
   )

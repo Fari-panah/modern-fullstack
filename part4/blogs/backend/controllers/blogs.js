@@ -54,11 +54,11 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 })
 
 blogsRouter.put('/:id', async (request, response) => {
-  const { title, author, url, likes } = request.body
+  const { title, author, url, likes, user } = request.body
 
   const updatedBlog = await Blog.findByIdAndUpdate(
     request.params.id,
-    { title, author, url, likes },
+    { title, author, url, likes, user },
     { new: true, //return the updated document instead of the old one.
       runValidators: true }//makes sure Mongoose validation rules are checked during the update.
   )
