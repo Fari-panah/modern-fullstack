@@ -41,7 +41,7 @@ const App = () => {
       }, 5000)
     })
 
-    
+
  const updateBlog = (blog) => {
   const updatedBlog = {
     ...blog,
@@ -88,8 +88,14 @@ const App = () => {
   
   const blogList = () => (
     <div>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} increseLike={updateBlog}/>
+      {[...blogs]
+      .sort((a, b) => b.likes - a.likes) //because e want to sort by likes so doesnt use just .sort()
+      .map(blog =>
+        <Blog
+          key={blog.id}
+          blog={blog}
+          increseLike={updateBlog}
+        />
       )}
     </div>
   )
