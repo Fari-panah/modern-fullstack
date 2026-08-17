@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useState } from 'react'
 const Blog = ({ blog, increseLike, user, removeBlog }) => {
 
   console.log('BLOG USER:', blog.user)
   console.log('LOGGED USER:', user)
 
-   const blogStyle = {
+  const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
@@ -15,7 +15,6 @@ const Blog = ({ blog, increseLike, user, removeBlog }) => {
 
   const visibility = () => {
     setView(!view)
-    
   }
   const addLike = () => {
     increseLike({
@@ -24,11 +23,11 @@ const Blog = ({ blog, increseLike, user, removeBlog }) => {
     })
 
   }
-  
+
   return (
-    <div style={blogStyle}>      
+    <div style={blogStyle}>
       <div>
-        {blog.title} 
+        {blog.title}
         <button onClick={visibility}>{view ? 'hide' : 'view'}</button>
       </div>
       {view && (
@@ -47,8 +46,7 @@ const Blog = ({ blog, increseLike, user, removeBlog }) => {
           )}
         </div>
       )}
-     
-    </div> 
+    </div>
   )
 
 }
