@@ -59,6 +59,16 @@ const App = () => {
     })
  }
 
+ const removeBlog = (blog) => {
+  if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+    blogService
+      .remove(blog.id)
+      .then(() => {
+        setBlogs(blogs.filter(b => b.id !== blog.id))
+      })
+  }
+}
+
  
   const handleLogin = async (username, password)=> {
      
@@ -94,7 +104,9 @@ const App = () => {
         <Blog
           key={blog.id}
           blog={blog}
+          user={user}
           increseLike={updateBlog}
+          removeBlog={removeBlog}
         />
       )}
     </div>
