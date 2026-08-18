@@ -27,18 +27,15 @@ const Blog = ({ blog, increseLike, user, removeBlog }) => {
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title}
-        <button onClick={visibility}>{view ? 'hide' : 'view'}</button>
+        <div>{blog.title}</div>
+        <div>{blog.author}
+          <button onClick={visibility}>{view ? 'hide' : 'view'}</button></div>
       </div>
       {view && (
         <div>
-          {blog.url}
-          <br />
-          likes {blog.likes}
-          <button onClick={addLike}>like</button>
-          <br />
-          {blog.author}
-          <br />
+          <div>{blog.url}</div>
+          <div>likes {blog.likes}
+            <button onClick={addLike}>like</button></div>
           {blog.user && blog.user.username === user.username &&(
             <button onClick={() => removeBlog(blog)}>
             remove
@@ -48,6 +45,5 @@ const Blog = ({ blog, increseLike, user, removeBlog }) => {
       )}
     </div>
   )
-
 }
 export default Blog
